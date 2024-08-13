@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import './i18n';
 
 function App() {
+  const { t, i18n } = useTranslation();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  useEffect(() => {
+    i18n.on('initialized', () => {
+      setIsInitialized(true);
+    });
+  }, [i18n, t]);
+
+  if (!isInitialized) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>{t('W0001')}</h1>
+      <button onClick={() => changeLanguage('en')}>English</button>
+      <button onClick={() => changeLanguage('ko')}>한국어</button>
     </div>
   );
 }
